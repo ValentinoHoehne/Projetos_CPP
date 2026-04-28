@@ -5,6 +5,7 @@
 ```cpp id="q8v2m1"
 #include <iostream>
 using namespace std;
+#include <string>
 
 enum Estado {
     DESLIGADO,
@@ -15,22 +16,25 @@ class Registro {
 public:
     int Login() {
         static bool Logado = false;
-        string username = "tito";
+        string username = "pedroguloso";
         int senha = 1234;
+        int senhaVer;
+        string userVer;
 
         do {
             cout << "Username: ";
-            cin >> username;
+            cin >> userVer;
             cout << "Senha: ";
-            cin >> senha;
+            cin >> senhaVer;
 
-            if (username != "tito" or senha != 1234) {
-                cout << "erro no login" << endl;
-            } else if (username == "tito" or senha == 1234) {
+            if (username != userVer || senha != senhaVer) {
+                cout << "erro no login" << endl;    
+            } else {
                 cout << "login feito" << endl;
+                Logado = true;
             }
 
-        } while (username != "tito" or senha != 1234);
+        } while (Logado == false);
 
         return 0;
     }
@@ -43,68 +47,49 @@ public:
         Registro Login;
         Estado estadoAtual = LIGADO;
 
-        char comandoLogar;
-        char comandoLigar;
-        char comandoDesligar;
         char comando;
 
         cout << "\nDigite (t = ligar): ";
-        cin >> comandoLigar;
+        cin >> comando;
 
-        if (comandoLigar == 't') {
+        if (comando == 't') {
             while (Ligado == true) {
                 switch (estadoAtual) {
 
                 case LIGADO:
-                    if (comandoLigar == 't') {
-                        estadoAtual = LIGADO;
-                        cout << "   Ligou!" << endl;
+                    cout << "   Ligou!" << endl;
+                    cout << "Digite (d = desligar, l = logar): ";
+                    cin >> comando;
 
-                        cout << "Digite (d = desligar, l = logar): ";
+                    if (comando == 'l') {
+                        Login.Login();
+
+                        cout << "Digite (d = desligar): ";
                         cin >> comando;
 
-                        if (comando == 'l') {
-                            do {
-                                Login.Login();
-                                Ligado = false;
-
-                                cout << "Digite (d = desligar): ";
-                                cin >> comandoDesligar;
-
-                                if (comandoDesligar = 'd') {
-                                    Ligado = false;
-                                    break;
-                                } else {
-                                    cout << "comando invalido";
-                                }
-
-                            } while (Ligado == false and comando == 'l');
-
-                        } else if (comando == 'd') {
-                            cout << "   Desligou!";
+                        if (comando == 'd') {
                             Ligado = false;
-                            break;
-
+                            cout << "   Desligou!" << endl;
                         } else {
                             cout << "comando invalido";
                         }
+
+                    } else if (comando == 'd') {
+                        cout << "   Desligou!" << endl;
+                        Ligado = false;
 
                     } else {
                         cout << "comando invalido";
                     }
 
-                case DESLIGADO:
-                    if (comandoDesligar == 'd') {
-                        estadoAtual = DESLIGADO;
-                        cout << "   Desligou!" << endl;
+                    break;
 
-                        do {
-                            Ligado = false;
-                        } while (Ligado == true);
-                    }
+                case DESLIGADO:
+                    cout << "   Desligado!" << endl;
+                    Ligado = false;
+                    break;
                 }
             }
-
         } else {
             cout << "comando invalido";
         }
@@ -117,5 +102,3 @@ int main() {
     Computador PC;
     PC.PC();
 }
-```
-
